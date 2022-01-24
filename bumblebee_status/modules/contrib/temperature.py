@@ -31,7 +31,7 @@ class Module(core.module.Module):
         return util.format.astemperature(self.__temperature, self.__unit)
 
     def output(self, widget):
-        return f'{self.__icon} {self.temperature()}'
+        return f' {self.__icon} {self.temperature()}'
 
     def get_temp(self):
         cmd = 'acpi -t | cut -d " " -f 4'

@@ -32,7 +32,7 @@ from requests.exceptions import RequestException
 
 
 class Module(core.module.Module):
-    @core.decorators.every(minutes=10)
+    @core.decorators.every(minutes=5)
     def __init__(self, config, theme):
         super().__init__(config, theme, core.widget.Widget(self.output))
 
@@ -62,7 +62,7 @@ class Module(core.module.Module):
         Update the weather information from openweathermap.org API
         """
 
-        with open('/tmp/weather.log', 'a') as f:
+        with open('/tmp/weather.log', 'a+') as f:
             log_str = ''
             f.write(time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + '\n')
 
