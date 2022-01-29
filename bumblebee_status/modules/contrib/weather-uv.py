@@ -41,6 +41,7 @@ class Module(core.module.Module):
             "apikey", "af7bfe22287c652d032a3064ffa44088")
         self.__icon = '🌤'
         self.__unit = 'metric'
+        self.__valid = False
 
         self.__lat = self.parameter('lat', -41.28)
         self.__lon = self.parameter('lon', 174.77)
@@ -55,6 +56,8 @@ class Module(core.module.Module):
         return util.format.astemperature(self.__tempmax, self.__unit)
 
     def output(self, widget):
+        if not self.__valid:
+            return f'Error: Weather unavailable'
         return f'{self.__icon} {self.temperature()} [{self.__tempmin}, {self.__tempmax}] UVI:{self.__uvi}'
 
     def update(self):
@@ -80,8 +83,10 @@ class Module(core.module.Module):
                 )
                 self.__uvi = round(data['current']['uvi'])
                 log_str = f'{self.__icon} {self.temperature()} [{self.__tempmin}, {self.__tempmax}] UVI:{self.__uvi}'
+                self.__valid = True
             except Exception as e:
                 log_str = str(e)
+                self.__valid = False
 
             f.write(log_str + '\n')
             f.write('-' * 80 + '\n')
